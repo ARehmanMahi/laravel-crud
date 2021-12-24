@@ -98,7 +98,6 @@ class MemberController extends Controller
             $errorCode = 500;
         }
 
-        return response($errorMessage, $errorCode);
     }
 
     /**
@@ -111,7 +110,6 @@ class MemberController extends Controller
     public function show(Request $request, Member $member)
     {
         if ($request->expectsJson()) {
-            return response($member);
         }
 
         $data['member'] = $member;
@@ -157,7 +155,6 @@ class MemberController extends Controller
             }
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
-            $errorCode = 500;
         }
 
         return response($errorMessage, $errorCode);
@@ -181,7 +178,6 @@ class MemberController extends Controller
             $errorCode = 400;
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
-            $errorCode = 500;
         }
 
         return response($errorMessage, $errorCode);

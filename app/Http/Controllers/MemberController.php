@@ -73,9 +73,6 @@ class MemberController extends Controller
      */
     public function store(MemberCreateRequest $request): Response
     {
-        $errorMessage = 'User Created successfully';
-        $errorCode = 200;
-
         try {
             $validatedData = $request->validated();
 
@@ -84,20 +81,24 @@ class MemberController extends Controller
                 $validatedData['image_path'] = str_replace('public/members/', 'storage/members/', $validatedData['image_path']);
             }
 
-            Member::create($validatedData);
+            $member = Member::create($validatedData);
+
+            $message = $member->id;
+            $statusCode = 200;
         } catch (QueryException $e) {
-            $errorMessage = json_encode($e->errorInfo);
-            $errorCode = 400;
+            $message = json_encode($e->errorInfo);
+            $statusCode = 400;
 
             if ($e->errorInfo[1] === 1062) {
-                $errorMessage = explode(" for ", $e->errorInfo[2])[0];
-                $errorCode = 419;
+                $message = explode(" for ", $e->errorInfo[2])[0];
+                $statusCode = 409;
             }
         } catch (\Exception $e) {
-            $errorMessage = $e->getMessage();
-            $errorCode = 500;
+            $message = $e->getMessage();
+            $statusCode = 500;
         }
 
+        return response($message, $statusCode);
     }
 
     /**
@@ -110,6 +111,7 @@ class MemberController extends Controller
     public function show(Request $request, Member $member)
     {
         if ($request->expectsJson()) {
+            return response($member);
         }
 
         $data['member'] = $member;
@@ -140,24 +142,25 @@ class MemberController extends Controller
      */
     public function update(MemberEditRequest $request, Member $member): Response
     {
-        $errorMessage = 'User Updated successfully';
-        $errorCode = 200;
-
         try {
             $member->update($request->validated());
+
+            $message = 'User Updated successfully';
+            $statusCode = 200;
         } catch (QueryException $e) {
-            $errorMessage = json_encode($e->errorInfo);
-            $errorCode = 400;
+            $message = json_encode($e->errorInfo);
+            $statusCode = 400;
 
             if ($e->errorInfo[1] === 1062) {
-                $errorMessage = explode(" for ", $e->errorInfo[2])[0];
-                $errorCode = 419;
+                $message = explode(" for ", $e->errorInfo[2])[0];
+                $statusCode = 409;
             }
         } catch (\Exception $e) {
-            $errorMessage = $e->getMessage();
+            $message = $e->getMessage();
+            $statusCode = 500;
         }
 
-        return response($errorMessage, $errorCode);
+        return response($message, $statusCode);
     }
 
     /**
@@ -168,19 +171,20 @@ class MemberController extends Controller
      */
     public function destroy(Member $member): Response
     {
-        $errorMessage = 'User Deleted successfully';
-        $errorCode = 200;
-
         try {
             $member->delete();
+
+            $message = 'User Deleted successfully';
+            $statusCode = 200;
         } catch (QueryException $e) {
-            $errorMessage = json_encode($e->errorInfo);
-            $errorCode = 400;
+            $message = json_encode($e->errorInfo);
+            $statusCode = 400;
         } catch (\Exception $e) {
-            $errorMessage = $e->getMessage();
+            $message = $e->getMessage();
+            $statusCode = 500;
         }
 
-        return response($errorMessage, $errorCode);
+        return response($message, $statusCode);
     }
 
     /**

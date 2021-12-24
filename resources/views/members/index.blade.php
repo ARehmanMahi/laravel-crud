@@ -42,10 +42,6 @@
     </div>
 
     <script type="text/javascript">
-        function format (row) {
-            return 'Hi Im Testing Row And my Index is 1'+ '<br>'+
-                'Hi Im Testing Row And my Index is 2: '
-        }
 
         $(function () {
             let table = $('.datatable').DataTable({

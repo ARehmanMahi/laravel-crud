@@ -101,10 +101,10 @@ class Member extends Model
     /**
      * Get the image URL.
      *
-     * @param string $value
+     * @param string|null $value
      * @return string
      */
-    public function getImagePathAttribute(string $value): string
+    public function getImagePathAttribute(?string $value): ?string
     {
         return asset($value);
     }

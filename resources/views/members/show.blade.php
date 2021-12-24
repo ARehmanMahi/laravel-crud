@@ -14,8 +14,7 @@
             font-size: 0.5em;
         }
     </style>
-</head>
-<body>
+
 
 <div class="container mt-5">
     @if(session('success'))
@@ -56,7 +55,4 @@
     });
 </script>
 
-</body>
-
-</html>
 </x-app-layout>

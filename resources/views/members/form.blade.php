@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Members</title>
-    <meta name="csrf_token" content="{{ csrf_token() }}">
-
-    {{-- bootstrap-5 css --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    {{-- fontawesome-5 css --}}
-    <link href="{{ asset('css/fontawesome.min.css') }}" rel="stylesheet">
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot>
 
     <style>
         i.required {
@@ -28,7 +23,7 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <form method="post" action="{{ $formAction }}">
+        <form method="post" action="{{ $formAction }}" enctype="multipart/form-data" id="myform">
             @csrf
             @if($member->id)
                 @method('patch')
@@ -88,6 +83,10 @@
                     <textarea cols="47" class="form-control" id="info" name="info"
                               placeholder="Description goes here">{{ old('info', $member->info) }}</textarea>
                 </div>
+                <div class="col-auto">
+                    <label for="image">Profile Pic</label>
+                    <input type="file" class="form-control" name="member_image" id="member_image">
+                </div>
             </div>
             <div class="row mt-3">
                 <div class="col-auto">
@@ -98,49 +97,28 @@
     </div>
 </div>
 
-{{-- jQuery-3 js --}}
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-{{-- bootstrap-5 js --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         $("form").submit(function (event) {
             event.preventDefault();
 
-            let id = $('#id').val()
-            let url = $('form').prop('action')
-            let token = $("input[name='_token']").val()
-            let method = $("input[name='_method']").val()
+            let myform = document.getElementById("myform");
+            let formData = new FormData(myform);
+            let url = $(myform).prop('action');
 
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: {
-                    "first_name": $("#first_name").val(),
-                    "last_name": $("#last_name").val(),
-                    "email": $("#email").val(),
-                    "info": $("#info").val(),
-                    "_token": token,
-                    "_method": method,
-                },
-                dataType: "json",
-                encode: true,
-                success: function (response) {
-                    if (response) {
-                        alert(response.message);
-
-                        if (!id) {
-                            $("form")[0].reset();
-                        }
+            axios.post(url, formData)
+                .then(function (response) {
+                    alert(response.data);
+                    if (!id) {
+                        $("form")[0].reset();
                     }
-                },
-                error: function (error) {
-                    alert(error.responseJSON.message)
-                }
-            });
+                })
+                .catch(function (error) {
+                    alert(error.responseJSON)
+                })
+                .then(function () {
+                    // always executed
+                });
         });
     });
 </script>
@@ -148,3 +126,4 @@
 </body>
 
 </html>
+</x-app-layout>

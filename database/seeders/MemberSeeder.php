@@ -8,7 +8,7 @@ class MemberSeeder extends Seeder {
 
         /**
          * You may encounter General error: 1390 Prepared statement contains too many placeholders
-         * This may happen because There is limit 65,535 (2^16-1) place holders in MariaDB 5.5+ & MySQL 5.5+.
+         * This may happen because There is limit 65,535 (2^16-1) place holders in MariaDB & MySQL.
          * Can be solved by array_chunk function using a dynamic chunk size based on the number of placeholders/columns
          */
 

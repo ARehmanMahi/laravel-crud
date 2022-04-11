@@ -22,10 +22,11 @@ class MemberFactory extends Factory
     public function definition()
     {
         return [
-            'first_name' => $this->firstName(),
-            'last_name' => $this->lastName(),
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'info' => $this->faker->text(),
+            'info' => 'Favorite number: ' . $this->faker->randomDigit(),
+            'is_active' => rand(0, 1),
         ];
     }
 }

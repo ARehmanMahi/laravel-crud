@@ -30,6 +30,7 @@ class Member extends Model
         'last_name',
         'email',
         'info',
+        'is_active',
         'image_path',
     ];
 

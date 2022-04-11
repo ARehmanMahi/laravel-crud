@@ -1,26 +1,24 @@
-<?php
-
-namespace Database\Seeders;
-
+<?php namespace Database\Seeders;
 use App\Models\Member;
 use Illuminate\Database\Seeder;
 
-class MemberSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
+class MemberSeeder extends Seeder {
+    public function run() {
         $faker = \Faker\Factory::create();
 
-        $noOfColumns = 15;
-        $noOfRows = 500000;
+        /**
+         * You may encounter General error: 1390 Prepared statement contains too many placeholders
+         * This may happen because There is limit 65,535 (2^16-1) place holders in MariaDB 5.5+ & MySQL 5.5+.
+         * Can be solved by array_chunk function using a dynamic chunk size based on the number of placeholders/columns
+         */
+
+        $noOfColumns = 13; // determine number of columns in the table
+        $noOfRows = 500000; // number of rows to be inserted 500k
 
         $range = range(1, $noOfRows);
-        $chunkSize = 65535 / ($noOfColumns + 1);
+
+        // calculate chunk size based on max placeholder / number of columns
+        $chunkSize = 65535 / ($noOfColumns + 1); // adding + 1 to fix rounding problem to be on safer side
 
         foreach (array_chunk($range, $chunkSize) as $chunk) {
             $user_data = [];

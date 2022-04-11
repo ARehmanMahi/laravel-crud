@@ -49,7 +49,7 @@ class MemberSeeder extends Seeder
             Member::insert($user_data);
         }
 
-        // takes 68-70 seconds, almost 60% slower, takes double the time of above
+        // takes 68-70 seconds, takes almost double the time of above
         // $records = Member::factory($noOfRows)->make()->makeHidden(['full_name']);
         // $records->chunk($chunkSize)->each(function ($records) {
         //     Member::insert($records->toArray());

@@ -1,10 +1,17 @@
-<?php namespace Database\Seeders;
-use App\Models\Member;
-use Illuminate\Database\Seeder;
+<?php
 
-class MemberSeeder extends Seeder {
-    public function run() {
-        $faker = \Faker\Factory::create();
+namespace Database\Seeders;
+
+use App\Models\Member;
+use Faker\Factory;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
+
+class MemberSeeder extends Seeder
+{
+    public function run()
+    {
+        $faker = Factory::create();
 
         /**
          * You may encounter General error: 1390 Prepared statement contains too many placeholders
@@ -12,7 +19,10 @@ class MemberSeeder extends Seeder {
          * Can be solved by array_chunk function using a dynamic chunk size based on the number of placeholders/columns
          */
 
-        $noOfColumns = 13; // determine number of columns in the table
+        $table = Member::getTableName();
+        $columns = Schema::getColumnListing($table);
+
+        $noOfColumns = count($columns); // determine number of columns in the table
         $noOfRows = 500000; // number of rows to be inserted 500k
 
         $range = range(1, $noOfRows);

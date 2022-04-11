@@ -23,13 +23,14 @@ class MemberSeeder extends Seeder {
         foreach (array_chunk($range, $chunkSize) as $chunk) {
             $user_data = [];
 
-            foreach ($chunk as $i) {
+            foreach ($chunk as $counter) {
                 $num = rand(0, 1);
+
                 $user_data[] = [
                     'first_name' => $faker->firstName(),
                     'last_name' => $faker->lastName(),
                     'email' => $faker->unique()->safeEmail(),
-                    'info' => 'Favorite number: ' . $i . $num,
+                    'info' => 'Favorite number: ' . $counter . $num,
                     'is_active' => $num,
                 ];
             }

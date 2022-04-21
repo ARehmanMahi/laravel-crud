@@ -16,6 +16,8 @@ class ModelObserver
      * saved,
      * deleting,
      * deleted,
+     * trashed,
+     * forceDeleted,
      * restoring,
      * restored,
      * replicating

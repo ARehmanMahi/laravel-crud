@@ -29,7 +29,9 @@ class ModelObserver
      */
     public function creating(Model $model): void
     {
-        $model->created_by = auth()->id();
+        if (!$model->isDirty('created_by')) {
+            $model->created_by = auth()->id();
+        }
     }
 
     /**
@@ -40,7 +42,9 @@ class ModelObserver
      */
     public function updating(Model $model): void
     {
-        $model->updated_by = auth()->id();
+        if (!$model->isDirty('updated_by')) {
+            $model->updated_by = auth()->id();
+        }
     }
 
     /**
@@ -51,6 +55,8 @@ class ModelObserver
      */
     public function deleting(Model $model): void
     {
-        $model->deleted_by = auth()->id();
+        if (!$model->isDirty('deleted_by')) {
+            $model->deleted_by = auth()->id();
+        }
     }
 }

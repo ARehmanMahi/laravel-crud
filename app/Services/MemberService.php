@@ -57,7 +57,7 @@ class MemberService
 
             if ($request->hasFile('member_image')) {
                 $location = '/members';
-                Storage::disk('public')->makeDirectory($location); // fix for flysystem permission bug
+                Storage::disk('public')->makeDirectory($location); // patch for flysystem permission bug
                 $data['image_path'] = $request->file('member_image')->store($location, 'public');
             }
 

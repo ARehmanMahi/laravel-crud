@@ -86,7 +86,7 @@
                                   placeholder="Description goes here">{{ old('info', $member->info) }}</textarea>
                     </div>
                     <div class="col-auto">
-                        <label for="image">Profile Pic</label>
+                        <label for="member_image">Profile Pic</label>
                         <input type="file" class="form-control" name="member_image" id="member_image">
                     </div>
                 </div>

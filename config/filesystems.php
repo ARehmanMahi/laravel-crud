@@ -1,5 +1,18 @@
 <?php
 
+$permissions = [
+    'file' => [
+        'private' => 0600,
+        'public' => 0640,
+        'custom' => 0660,
+    ],
+    'dir' => [
+        'private' => 0700,
+        'public' => 0750,
+        'custom' => 0770,
+    ],
+];
+
 return [
 
     /*
@@ -39,7 +52,8 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
+            'visibility' => env('PUBLIC_VISIBILITY', 'public'),
+            'permissions' => $permissions,
         ],
 
         's3' => [

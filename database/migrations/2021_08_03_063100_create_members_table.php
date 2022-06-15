@@ -22,8 +22,8 @@ class CreateMembersTable extends Migration
             $table->string('image_path')->nullable();
             $table->tinyInteger('is_active')->default(1);
 
-            $table->timestamp('created_at')->nullable()->useCurrent();
-            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
 
             $table->foreignId('created_by')->nullable()->constrained('users');

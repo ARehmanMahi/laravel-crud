@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Models\Scopes\WhereUserIsActive;
+use App\Traits\CreateMany;
+use App\Traits\GetTableNameStatically;
 use App\Traits\ModelObservant;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\GetTableNameStatically;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @mixin IdeHelperMember
@@ -17,6 +19,7 @@ class Member extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use CreateMany;
     use ModelObservant;
     use GetTableNameStatically;
 
@@ -40,18 +43,6 @@ class Member extends Model
      * @var array
      */
     protected $appends = ['full_name'];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime',
-    ];
-
 
     /**
      * Prepare a date for array / JSON serialization.
@@ -104,6 +95,6 @@ class Member extends Model
      */
     public function getImagePathAttribute(?string $value): ?string
     {
-        return asset($value);
+        return Storage::disk('public')->url($value);
     }
 }

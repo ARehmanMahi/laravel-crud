@@ -8,12 +8,12 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.7",
-        "laravel/framework": "^8.40",
+        "laravel/framework": "^8.0",
         "laravel/jetstream": "^2.3",
         "laravel/sanctum": "^2.13",
         "laravel/tinker": "^2.5",
@@ -50,6 +50,9 @@
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-install-cmd": [
+            "@php artisan storage:link"
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"

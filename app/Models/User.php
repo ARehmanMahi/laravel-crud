@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Traits\CreateMany;
 use App\Traits\GetTableNameStatically;
 use App\Traits\ModelObservant;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -22,8 +23,10 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use CreateMany;
     use ModelObservant;
     use GetTableNameStatically;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -55,10 +58,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime',
+        'email_verified_at' => 'datetime'
     ];
 
     /**

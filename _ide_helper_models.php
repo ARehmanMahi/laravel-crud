@@ -14,12 +14,12 @@ namespace App\Models{
 /**
  * App\Models\Member
  *
- * @mixin IdeHelperMember
  * @property int $id
  * @property string $first_name
  * @property string $last_name
  * @property string $email
  * @property string|null $info
+ * @property string $image_path
  * @property int $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -28,7 +28,6 @@ namespace App\Models{
  * @property int|null $updated_by
  * @property int|null $deleted_by
  * @property-read string $full_name
- * @property-read string $image_path
  * @method static \Database\Factories\MemberFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Member newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Member newQuery()
@@ -41,6 +40,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Member whereImagePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereInfo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereLastName($value)
@@ -49,14 +49,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Query\Builder|Member withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Member withoutTrashed()
  */
-	class IdeHelperMember extends \Eloquent {}
+	class IdeHelperMember {}
 }
 
 namespace App\Models{
 /**
  * App\Models\User
  *
- * @mixin IdeHelperUser
  * @property int $id
  * @property string $first_name
  * @property string $last_name
@@ -83,6 +82,7 @@ namespace App\Models{
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static \Illuminate\Database\Query\Builder|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedBy($value)
@@ -101,7 +101,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorSecret($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedBy($value)
+ * @method static \Illuminate\Database\Query\Builder|User withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  */
-	class IdeHelperUser extends \Eloquent {}
+	class IdeHelperUser {}
 }
 

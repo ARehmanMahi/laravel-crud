@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
 use App\Exceptions\ModelServiceException;
 use App\Http\Requests\MemberCreateRequest;
 use App\Http\Requests\MemberEditRequest;
 use App\Models\Member;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
 
 class MemberService
 {
@@ -17,18 +19,19 @@ class MemberService
     {
         $request = request();
 
-        $recordsTotal = Member::select(DB::raw('count(*) count'))->value('count');
+        $recordsTotal = Member::query()->select(DB::raw('count(*) count'))->value('count');
 
-        $members = Member::query()->select(
-            'id',
-            'first_name',
-            'last_name',
-            'email',
-            'info',
-            'image_path',
-            'is_active',
-            'created_at'
-        )
+        $members = Member::query()
+            ->select(
+                'id',
+                'first_name',
+                'last_name',
+                'email',
+                'info',
+                'image_path',
+                'is_active',
+                'created_at'
+            )
             ->offset($request->input('start', 0))
             ->limit($request->input('length', 10))
             ->get();
@@ -50,15 +53,16 @@ class MemberService
     public function store(MemberCreateRequest $request): Member
     {
         try {
-            $validatedData = $request->validated();
+            $data = $request->validated();
 
             if ($request->hasFile('member_image')) {
-                $validatedData['image_path'] = $request->member_image->store('public/members');
-                $validatedData['image_path'] = str_replace('public/members/', 'storage/members/', $validatedData['image_path']);
+                $location = '/members';
+                Storage::disk('public')->makeDirectory($location); // fix for flysystem permission bug
+                $data['image_path'] = $request->file('member_image')->store($location, 'public');
             }
 
-            return Member::create($validatedData);
-        } catch (\Exception | \Error $e) {
+            return Member::query()->create($data);
+        } catch (\Throwable $e) {
             throw new ModelServiceException($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -73,7 +77,7 @@ class MemberService
     {
         try {
             $member->update($request->validated());
-        } catch (\Exception | \Error $e) {
+        } catch (\Throwable $e) {
             throw new ModelServiceException($e->getMessage(), $e->getCode(), $e);
         }
     }

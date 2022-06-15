@@ -10,6 +10,7 @@ use App\Services\MemberService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MemberController extends Controller
 {
@@ -18,9 +19,9 @@ class MemberController extends Controller
      */
     private $memberService;
 
-    public function __construct()
+    public function __construct(MemberService $memberService)
     {
-        $this->memberService = new MemberService;
+        $this->memberService = $memberService;
     }
 
     /**

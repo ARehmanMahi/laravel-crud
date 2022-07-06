@@ -1,0 +1,84 @@
+# MySQL credentials root/p@rooT007
+# docker-compose build
+# docker-compose up -d // run containers in daemon mode
+# docker-compose down
+# docker-compose run --rm composer install // run container, executes and then destroy
+# docker exec -it nginx sh // ssh into container
+
+version: '3.8'
+
+services:
+    mysql:
+        build:
+            context: .
+            dockerfile: docker/mysql.Dockerfile
+        container_name: mysql
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: laravel_crud
+            MYSQL_USER: laravel_crud
+            MYSQL_PASSWORD: p@rooT007
+            MYSQL_ROOT_PASSWORD: p@rooT007
+        volumes:
+            - mysql-data:/var/lib/mysql
+
+    php:
+        build:
+            context: .
+            dockerfile: docker/php.Dockerfile
+        container_name: php81
+        volumes:
+            - .:/var/www/html/
+
+    artisan:
+        build:
+            context: .
+            dockerfile: docker/php.Dockerfile
+        container_name: artisan
+        entrypoint: ['php', '/var/www/html/artisan']
+        volumes:
+            - .:/var/www/html/
+        working_dir: /var/www/html/
+        depends_on:
+            - mysql
+            - php
+
+    nginx:
+        build:
+            context: .
+            dockerfile: docker/nginx.Dockerfile
+        container_name: nginx
+        restart: always
+        ports:
+            - "80:80"
+        volumes:
+            - .:/var/www/html/
+        extra_hosts:
+            - "laravel-crud.test:127.0.0.1"
+        depends_on:
+            - mysql
+            - php
+
+    composer:
+        build:
+            context: .
+            dockerfile: docker/composer.Dockerfile
+        container_name: composer
+        volumes:
+            - .:/var/www/html/
+        working_dir: /var/www/html/
+
+    npm:
+        build:
+            context: .
+            dockerfile: docker/npm.Dockerfile
+        container_name: npm
+        entrypoint: ['npm']
+        volumes:
+            - .:/var/www/html/
+        working_dir: /var/www/html/
+
+volumes:
+    mysql-data:
